@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-33465bd37ba352500a09ddf919379e1303a1a2b2",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Voting.sol": "project/contracts/Voting.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Voting.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.8.10;\r\n\r\ncontract Voting {\r\n\r\n    struct Candidate {\r\n        string name;\r\n        uint voteCount;\r\n    }\r\n\r\n    mapping(address => bool) public hasVoted;\r\n\r\n    Candidate[] public candidates;\r\n\r\n    address public admin;\r\n\r\n    bool public votingActive;\r\n\r\n    event VoteCast(address indexed voter, uint indexed candidateIndex);\r\n    event VotingStarted();\r\n    event VotingEnded();\r\n\r\n    constructor(string[] memory candidateNames) {\r\n        admin = msg.sender;\r\n        for (uint i = 0; i < candidateNames.length; i++) {\r\n            candidates.push(Candidate({name: candidateNames[i], voteCount: 0}));\r\n        }\r\n        votingActive = false;\r\n    }\r\n\r\n    function getCandidates() public view returns (Candidate[] memory){\r\n        return candidates;\r\n    }\r\n\r\n    function startVoting() public onlyAdmin {\r\n        require(!votingActive, \"Voting already active\");\r\n\r\n        votingActive = true;\r\n\r\n        emit VotingStarted();\r\n    }\r\n\r\n    function endVoting() public onlyAdmin {\r\n        require(votingActive, \"Voting is not active\");\r\n\r\n        votingActive = false;\r\n\r\n        emit VotingEnded();\r\n    }\r\n\r\n\r\n    function vote(uint candidateIndex) public {\r\n        require(votingActive, \"Voting is not active\");\r\n        require(!hasVoted[msg.sender], \"Address already voted\");\r\n\r\n        hasVoted[msg.sender] = true;\r\n        candidates[candidateIndex].voteCount += 1;\r\n\r\n        emit VoteCast(msg.sender, candidateIndex);\r\n    }\r\n\r\n    function getWinner() public view returns (bool tie, string memory winnerName, uint winnerVotes) {\r\n        require(!votingActive, \"Voting still active\");\r\n\r\n        uint highestVotes = 0;\r\n        uint winnerIndex = 0;\r\n        tie = false;\r\n\r\n        for (uint i = 0; i < candidates.length; i++) {\r\n            if (candidates[i].voteCount > highestVotes) {\r\n                highestVotes = candidates[i].voteCount;\r\n                winnerIndex = i;\r\n                tie = false;\r\n            } else if (candidates[i].voteCount == highestVotes) {\r\n                tie = true;\r\n            }\r\n        }\r\n        return (tie, candidates[winnerIndex].name, candidates[winnerIndex].voteCount);\r\n    }\r\n\r\n    modifier onlyAdmin() {\r\n        require(msg.sender == admin, \"Only admin can perform this action\");\r\n        _;\r\n    }\r\n}\r\n"
+      }
+    }
+  }
+}
