@@ -14,7 +14,6 @@ Um das Projekt lokal auszuführen, werden folgende Programme benötigt:
 
 - Node.js
 - Git  
-- Hardhat 3
 - MetaMask
   
 ## Anwendung starten
