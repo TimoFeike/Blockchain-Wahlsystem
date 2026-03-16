@@ -1,6 +1,6 @@
 # Blockchain Wahlsystem – Bachelorarbeit "Dezentrale Wahlsysteme auf der Blockchain: Eine technische und kritische Untersuchung mit prototypischem System"
 
-Dieses Repository enthält den Prototyp eines Blockchain-basierten Wahlsystems, entwickelt im Rahmen meiner Bachelorarbeit. Das Projekt umfasst ein Smart Contract, ein Frontend sowie die Deployment Konfiguration mit Hardhat.
+Dieses Repository enthält den Prototypen eines Blockchain-basierten Wahlsystems, entwickelt im Rahmen einer Bachelorarbeit. Das Projekt umfasst ein Smart Contract, ein Frontend sowie die Deployment Konfiguration mit Hardhat.
 
 ## Projektstruktur
 
